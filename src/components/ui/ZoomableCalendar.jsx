@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { THEME } from "./theme";
+import ContributionGraph from "./ContributionGraph";
 
-const ZoomableCalendar = ({ globalDate, setGlobalDate }) => {
-  const [view, setView] = useState("month"); // 'month' | 'year'
+const ZoomableCalendar = ({ globalDate, setGlobalDate, habits }) => {
   const [displayDate, setDisplayDate] = useState(new Date(globalDate));
+  const [view, setView] = useState("month");
 
-  const toggleView = () => setView(view === "month" ? "year" : "month");
+  useEffect(() => {
+    setDisplayDate(new Date(globalDate));
+  }, [globalDate]);
 
   const changeMonth = (delta) => {
     const newDate = new Date(displayDate);
@@ -19,6 +22,8 @@ const ZoomableCalendar = ({ globalDate, setGlobalDate }) => {
     newDate.setFullYear(newDate.getFullYear() + delta);
     setDisplayDate(newDate);
   };
+
+  const toggleView = () => setView(view === "month" ? "year" : "month");
 
   const MonthGrid = ({ date, isMini }) => {
     const year = date.getFullYear();
@@ -47,20 +52,20 @@ const ZoomableCalendar = ({ globalDate, setGlobalDate }) => {
           ))}
           {days.map((d) => {
             const isSelected =
-              !isMini &&
               d === globalDate.getDate() &&
-              month === globalDate.getMonth();
+              month === globalDate.getMonth() &&
+              year === globalDate.getFullYear();
             return (
               <button
                 key={d}
                 onClick={() => {
-                  if (!isMini) {
-                    const newD = new Date(date);
-                    newD.setDate(d);
-                    setGlobalDate(newD);
-                  }
+                  const newD = new Date(date);
+                  newD.setDate(d);
+                  setGlobalDate(newD);
                 }}
-                className={`text-xs h-8 w-8 rounded-full flex items-center justify-center ${
+                className={`text-xs rounded-full flex items-center justify-center ${
+                  isMini ? "h-6 w-6 text-[10px]" : "h-8 w-8"
+                } ${
                   isSelected
                     ? THEME.cyanBg + " text-black font-bold"
                     : "text-gray-400 hover:bg-white/10"
@@ -76,49 +81,73 @@ const ZoomableCalendar = ({ globalDate, setGlobalDate }) => {
   };
 
   return (
-    <div className={`${THEME.card} p-4 rounded-xl`}>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className={`font-bold ${THEME.text} uppercase`}>
-          {view === "month"
-            ? displayDate.toLocaleString("default", {
-                month: "long",
-                year: "numeric",
-              })
-            : displayDate.getFullYear()}
-        </h3>
-        <div className="flex gap-2 items-center">
-          {view === "month" && (
-            <>
-              <button onClick={() => changeMonth(-1)}>
-                <ChevronLeft className={THEME.subText} />
-              </button>
-              <button onClick={() => changeMonth(1)}>
-                <ChevronRight className={THEME.subText} />
-              </button>
-            </>
-          )}
-          <button
-            onClick={toggleView}
-            className={`p-2 rounded-full bg-white/5 ${THEME.text}`}
-          >
-            <Search size={16} />
-          </button>
+    <div className="flex flex-col gap-6">
+      <ContributionGraph
+        habits={habits}
+        year={displayDate.getFullYear()}
+        selectedDate={globalDate}
+        setGlobalDate={setGlobalDate}
+      />
+      <div className={`${THEME.card} glass-card p-6 rounded-xl`}>
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-3">
+            <h3 className={`font-bold ${THEME.text} uppercase`}>
+              {view === "month"
+                ? displayDate.toLocaleString("default", { month: "long" })
+                : displayDate.getFullYear()}
+            </h3>
+            {view === "month" && (
+              <div className="flex items-center bg-white/5 rounded-lg px-1">
+                <button onClick={() => changeYear(-1)} className="p-1">
+                  <ChevronLeft size={12} className={THEME.subText} />
+                </button>
+                <span className={`text-xs font-bold ${THEME.text} px-1`}>
+                  {displayDate.getFullYear()}
+                </span>
+                <button onClick={() => changeYear(1)} className="p-1">
+                  <ChevronRight size={12} className={THEME.subText} />
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="flex gap-2 items-center">
+            <button
+              onClick={() =>
+                view === "month" ? changeMonth(-1) : changeYear(-1)
+              }
+            >
+              <ChevronLeft className={THEME.subText} />
+            </button>
+            <button
+              onClick={() =>
+                view === "month" ? changeMonth(1) : changeYear(1)
+              }
+            >
+              <ChevronRight className={THEME.subText} />
+            </button>
+            <button
+              onClick={toggleView}
+              className={`p-2 rounded-full bg-white/5 ${THEME.text}`}
+            >
+              <Search size={16} />
+            </button>
+          </div>
         </div>
-      </div>
 
-      {view === "month" ? (
-        <MonthGrid date={displayDate} />
-      ) : (
-        <div className="grid grid-cols-3 gap-4">
-          {Array.from({ length: 12 }, (_, i) => (
-            <MonthGrid
-              key={i}
-              date={new Date(displayDate.getFullYear(), i, 1)}
-              isMini
-            />
-          ))}
-        </div>
-      )}
+        {view === "month" ? (
+          <MonthGrid date={displayDate} />
+        ) : (
+          <div className="grid grid-cols-3 gap-4">
+            {Array.from({ length: 12 }, (_, i) => (
+              <MonthGrid
+                key={i}
+                date={new Date(displayDate.getFullYear(), i, 1)}
+                isMini
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

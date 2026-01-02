@@ -33,19 +33,27 @@ const ContributionGraph = ({ habits, year, selectedDate, setGlobalDate }) => {
   });
 
   return (
-    <div className={`${THEME.card} p-4 rounded-xl`}>
+    <div className={`${THEME.card} glass-card p-4 rounded-xl`}>
       <h3 className={`text-xs font-bold ${THEME.text} mb-4 uppercase`}>
         Yearly Consistency
       </h3>
+      <div className="flex justify-between w-full mb-4 px-1">
+        {Object.entries(INTENSITIES).map(([level, { label, color }]) => (
+          <div key={level} className="flex items-center gap-2">
+            <div className={`w-4 h-4 rounded-[2px] ${color}`}></div>
+            <span className={`text-xs ${THEME.subText}`}>{label}</span>
+          </div>
+        ))}
+      </div>
       <div className="flex gap-4 overflow-x-auto pb-2">
         {months.map((m, idx) => (
           <div key={idx} className="shrink-0">
             <div className={`text-[10px] font-bold ${THEME.subText} mb-2`}>
               {m.name}
             </div>
-            <div className="grid grid-rows-7 grid-flow-col gap-1 w-max">
+            <div className="grid grid-rows-7 grid-flow-col gap-1.5 w-max">
               {m.days.map((date, i) => {
-                if (!date) return <div key={i} className="w-2 h-2"></div>;
+                if (!date) return <div key={i} className="w-3 h-3"></div>;
                 const dateKey = getLocalISOString(date);
                 const level = getAvgIntensity(dateKey);
                 const isSelected = dateKey === selectedDateKey;
@@ -54,7 +62,7 @@ const ContributionGraph = ({ habits, year, selectedDate, setGlobalDate }) => {
                     key={i}
                     onClick={() => date && setGlobalDate(date)}
                     title={`${dateKey}: ${level.toFixed(1)}`}
-                    className={`w-2 h-2 rounded-[1px] cursor-pointer transition-all hover:opacity-80 ${getColor(
+                    className={`w-3 h-3 rounded-[1px] cursor-pointer transition-all hover:opacity-80 ${getColor(
                       level
                     )} ${isSelected ? "ring-2 ring-white z-10 scale-125" : ""}`}
                   ></div>

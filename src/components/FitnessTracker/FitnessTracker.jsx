@@ -124,7 +124,9 @@ const FitnessTracker = ({ globalDate }) => {
           {isEditing ? <Save size={18} /> : <Edit3 size={18} />}
         </button>
       </div>
-      <div className={`${THEME.card} p-4 rounded-xl flex flex-col gap-4`}>
+      <div
+        className={`${THEME.card} glass-card p-4 rounded-xl flex flex-col gap-4`}
+      >
         <div className="flex justify-between items-start">
           <div>
             <p className={`text-xs ${THEME.subText}`}>Weight</p>
@@ -162,7 +164,7 @@ const FitnessTracker = ({ globalDate }) => {
         </div>
         <NeonButton onClick={generateFullPlan}>GENERATE PLAN</NeonButton>
       </div>
-      <div className={`${THEME.card} p-4 rounded-xl`}>
+      <div className={`${THEME.card} glass-card p-4 rounded-xl`}>
         <div className="flex justify-between items-center mb-4">
           <h3 className={`text-sm font-bold ${THEME.text}`}>{graphView}</h3>
           <div className="flex gap-2">
@@ -195,7 +197,7 @@ const FitnessTracker = ({ globalDate }) => {
       </div>
       {detailedPlan && (
         <div
-          className={`${THEME.card} p-4 rounded-xl border-l-4 border-l-lime-500`}
+          className={`${THEME.card} glass-card p-4 rounded-xl border-l-4 border-l-lime-500`}
         >
           <div className="flex justify-between mb-2">
             <h4 className={`text-sm font-bold ${THEME.text}`}>PLAN</h4>
@@ -214,7 +216,7 @@ const FitnessTracker = ({ globalDate }) => {
         </div>
       )}
       <AdvancedAnalytics data={fitnessData} title="CALORIE" />
-      <div className={`${THEME.card} p-4 rounded-xl`}>
+      <div className={`${THEME.card} glass-card p-4 rounded-xl`}>
         <h3 className={`text-sm font-bold ${THEME.text} mb-3`}>LOGS</h3>
         <MealInput label="BREAKFAST" mealKey="b" />
         <MealInput label="LUNCH" mealKey="l" />

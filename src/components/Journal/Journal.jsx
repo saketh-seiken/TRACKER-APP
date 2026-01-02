@@ -21,7 +21,7 @@ const Journal = ({ globalDate }) => {
   return (
     <div className="fixed inset-0 top-120  px-4 flex flex-col z-10">
       <div
-        className={`${THEME.card} flex-1 flex flex-col rounded-2xl relative overflow-hidden`}
+        className={`${THEME.card} glass-card flex-1 flex flex-col rounded-2xl relative overflow-hidden`}
       >
         <div className="p-3 bg-black/20 flex justify-between items-center">
           <span className="text-[10px] uppercase text-gray-500 tracking-widest">

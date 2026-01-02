@@ -1,6 +1,6 @@
 export const THEME = {
   bg: "bg-[#050505]",
-  card: "bg-[#121212] border border-white/10 shadow-xl",
+  card: "glass-card",
   text: "text-slate-200",
   subText: "text-gray-500",
   cyan: "text-cyan-400",

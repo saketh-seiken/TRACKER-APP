@@ -84,7 +84,9 @@ const BudgetTracker = ({ globalDate }) => {
         </h1>
       </div>
       <AdvancedAnalytics data={categoryTotals} title="SPENDING" />
-      <div className={`${THEME.card} p-3 rounded-xl flex flex-col gap-2`}>
+      <div
+        className={`${THEME.card} glass-card p-3 rounded-xl flex flex-col gap-2`}
+      >
         <div className="flex gap-2">
           <input
             placeholder="Item"
@@ -124,7 +126,7 @@ const BudgetTracker = ({ globalDate }) => {
         {dailyData.map((t) => (
           <div
             key={t.id}
-            className={`${THEME.card} p-4 rounded-xl flex justify-between items-center`}
+            className={`${THEME.card} glass-card p-4 rounded-xl flex justify-between items-center`}
           >
             <div className="flex items-center gap-3">
               <div
